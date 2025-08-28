@@ -4,7 +4,7 @@ To use this Rat for *EDUCATIONAL PURPOSES* only.
 1. Create a bot on telegram From BotFather.
 2. He will give you the bot's API TOKEN which is important that you *dont share to anyone*
 3. Send a message to your bot(A "hi" will work. dont send /start. if /start is only the option then send it and clear the chat history and then send hii)
-4. Now after sending the msg go to https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates Note: Replace the <YOUR_BOT_TOKEN> with your bot's api token.
+4. Now after sending the msg go to "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates" Note: Replace the <YOUR_BOT_TOKEN> with your bot's api token.
 5. There you will find your chat id like this
 6. "chat": {
     "id": -123456789,
