@@ -19,13 +19,16 @@ To use this Rat for *EDUCATIONAL PURPOSES* only.
 1. Keylogging ::: It will start Capturing Everything that the user types on their keyload and send the data in a .txt file when the file reaches 1 KB size.<br>
 2. Clipboard data Exfiltration (command /clipboard)<br>
 ****COMMANDS****<br>
+
    /sysinfo - [provides you with the system information]<br>
    /speech - [make the computer speak]<br>
    /screenshot - [takes a screenshot of the computer screen.]<br>
    /fetch - [provides you with the keylog file. NOTE:the keylogger files is automatically uploaded once the file reaches 1KB]<br>
    /startup - [add the rat to starup so it persists even after reboot]<br>
    /record - [record the screen for a specified duration in seconds]<br>
+
 NOTE: You can type /start or /help to display the above command list.<br>
+
 Further Instructions:<br>
 Once running, you can send commands directly through the Telegram bot chat<br>
 in the Telegram app itself to control the RAT remotely.<br>
