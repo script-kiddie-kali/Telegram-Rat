@@ -15,10 +15,6 @@ To use this Rat for *EDUCATIONAL PURPOSES* only.
 9. Now you can EITHER deploy your pyhton script directly but it wont work if the system doesnt have required libraries 
 10. To make sure that Your rat work (in windows) make it an .exe file using pyinstaller(you can search it up on youtube how to convert python files into .exe)
 
-
-
-
-
 ****FEATURES OF THIS RAT****
 1. Keylogging ::: It will start Capturing Everything that the user types on their keyload and send the data in a .txt file when the file reaches 1 KB size.
 2. Clipboard data Exfiltration (command /clipboard)
@@ -30,3 +26,7 @@ To use this Rat for *EDUCATIONAL PURPOSES* only.
    /startup - [add the rat to starup so it persists even after reboot]
    /record - [record the screen for a specified duration in seconds]
 NOTE: You can type /start or /help to display the above command list.
+Further Instructions:
+Once running, you can send commands directly through the Telegram bot chat
+in the Telegram app itself to control the RAT remotely.
+Use commands like /start, /help, /screenshot, etc.
