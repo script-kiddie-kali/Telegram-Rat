@@ -18,7 +18,7 @@ To use this Rat for *EDUCATIONAL PURPOSES* only.
 ****FEATURES OF THIS RAT****
 1. Keylogging ::: It will start Capturing Everything that the user types on their keyload and send the data in a .txt file when the file reaches 1 KB size.<br>
 2. Clipboard data Exfiltration (command /clipboard)<br>
-***COMMANDS***<br>
+****COMMANDS****<br>
    /sysinfo - [provides you with the system information]<br>
    /speech - [make the computer speak]<br>
    /screenshot - [takes a screenshot of the computer screen.]<br>
