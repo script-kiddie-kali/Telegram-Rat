@@ -13,7 +13,7 @@ To use this Rat for *EDUCATIONAL PURPOSES* only.
 7. if chat id is not visible then keep on refreshing the page.
 8. Now paste the Bot's API TOKEN and CHAT ID in the python script(i have commented where to put them)
 9. Now you can EITHER deploy your pyhton script directly but it wont work if the system doesnt have required libraries 
-10. To make sure that Your rat work (in windows) make it an .exe file using pyinstaller(you can search it up on youtube how to convert python files into .exe)
+10. To make sure that Your rat work (in windows) make it an .exe file using pyinstaller(you can search it up on youtube how to convert python files into .exe)<br.
 
 ****FEATURES OF THIS RAT****
 1. Keylogging ::: It will start Capturing Everything that the user types on their keyload and send the data in a .txt file when the file reaches 1 KB size.
