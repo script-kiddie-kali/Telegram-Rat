@@ -1,6 +1,6 @@
 # Telegram-Rat
 This is a Simple Telegram Rat which utilises Telegram Bot API to act as a C2 server.
-To use this Rat for *EDUCATIONAL PURPOSES* only.
+Use this Rat for *EDUCATIONAL PURPOSES* only.
 1. Create a bot on telegram From BotFather.
 2. He will give you the bot's API TOKEN which is important that you *dont share to anyone*
 3. Send a message to your bot(A "hi" will work. dont send /start. if /start is only the option then send it and clear the chat history and then send hii)
